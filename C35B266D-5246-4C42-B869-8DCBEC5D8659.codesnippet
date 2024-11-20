@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>snippet_reducer</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>import Foundation
+import ComposableArchitecture
+import SwiftUI
+import TGKit
+import TGConfig
+import TGResources
+import TGNetwork
+import TGUI
+
+@Reducer
+public struct LevelReducer {
+    @ObservableState
+    public struct State: Equatable {
+        var loadingState: LoadingState = .loading
+    }
+    
+    public init() {
+    }
+    
+    public enum Action: BindableAction {
+        case onAppear
+        case onDisappear
+        case binding(BindingAction&lt;State&gt;)
+    }
+    
+    public var body: some Reducer&lt;State, Action&gt; {
+        BindingReducer()
+        Reduce(core)
+    }
+    @Dependency(\.networkService) var network
+}
+
+extension LevelReducer {
+    func core(state: inout State, action: Action) -&gt; Effect&lt;Action&gt; {
+        switch action {
+        case .onAppear:
+            return .run { send in
+                try? await Task.sleep(nanoseconds: UInt64(2 * 1_000_000_000))
+                await send(.binding(.set(\.loadingState, .idle)))
+            }
+        default:
+            break
+        }
+        return .none
+    }
+}
+
+struct LevelView: View {
+    @Perception.Bindable var store: StoreOf&lt;LevelReducer&gt;
+    @EnvironmentObject var navigationState: NavigationState
+    var body: some View {
+        WithPerceptionTracking {
+            ZStack {
+                if store.loadingState == .idle {
+                    VStack {
+                        Text("to do")
+                        Spacer()
+                    }
+                } else {
+                    LoadingView()
+                }
+            }
+            .pureNavigation(color: .clear)
+            .onAppear {
+                store.send(.onAppear)
+            }
+            .onDisappear {
+                store.send(.onDisappear)
+            }
+        }
+    }
+}
+</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>C35B266D-5246-4C42-B869-8DCBEC5D8659</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string></string>
+	<key>IDECodeSnippetTitle</key>
+	<string>snippet_reducer</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

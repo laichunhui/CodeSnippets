@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>snippet_api</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>import Foundation
+import TGConfig
+import TGNetwork
+import Moya
+import TGKit
+
+public enum RoomCreateApi {
+    case exploreRooms(page: Int)
+}
+
+extension RoomCreateApi: TargetType, WEApiProtocol {
+    public var baseURL: URL {
+        return URL(string: TGConfig.shared.apiDomain)!
+    }
+    
+    public var headers: [String : String]? {
+        return nil
+    }
+    
+    public var showLoading: Bool {
+        return false
+    }
+    
+    public var showErrorMessage: Bool {
+        return false
+    }
+    
+    public var identifier: String {
+        return ""
+    }
+    
+    public func errorCodeProcess(errorMsg: (Int, String)) {
+    }
+    
+    public var path: String {
+        switch self {
+        case .exploreRooms:
+            return "/home/explore/rooms"
+        }
+    }
+    
+    public var method: Moya.Method {
+        return .get
+    }
+    
+    public var sampleData: Data {
+        return "".data(using: String.Encoding.utf8)!
+    }
+    
+    public var task: Task {
+        let encoding: ParameterEncoding = method == .post ? JSONEncoding.default : URLEncoding.queryString
+        var params = [String :Any]()
+        switch self {
+        case let .exploreRooms(page):
+            params["page"] = page
+            params["limit"] = 20
+        }
+        return .requestParameters(parameters: params, encoding: encoding)
+    }
+}</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>2CC56F43-5CC1-453E-A8B0-AA3A553CA5D4</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string></string>
+	<key>IDECodeSnippetTitle</key>
+	<string>api mode</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>
