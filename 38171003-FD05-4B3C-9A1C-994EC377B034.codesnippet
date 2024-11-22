@@ -13,7 +13,8 @@
 import TGResources
 import TGUI
 import ComposableArchitecture
-import SwiftUI</string>
+import SwiftUI
+import TGConfig</string>
 	<key>IDECodeSnippetIdentifier</key>
 	<string>38171003-FD05-4B3C-9A1C-994EC377B034</string>
 	<key>IDECodeSnippetLanguage</key>
